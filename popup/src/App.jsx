@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import "./App.css"; // use App.css instead of ProductPopup.css
 
-function App() {
-  const [count, setCount] = useState(0)
+const products = [
+  {
+    id: 1,
+    name: "Wireless Headphones",
+    price: "$59.99",
+    shortDesc: "Comfortable over-ear design.",
+    fullDesc:
+      "These wireless headphones deliver crystal-clear sound and deep bass with up to 20 hours of battery life.",
+    image: "wireless-headphones.jpeg",
+  },
+  {
+    id: 2,
+    name: "Smart Watch",
+    price: "$89.99",
+    shortDesc: "Track your health and notifications.",
+    fullDesc:
+      "Stay connected and track your daily activity with this smartwatch featuring heart-rate monitoring and GPS.",
+    image: "smartwatch.jpeg",
+  },
+];
+
+export default function App() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container">
+      <h2>Product List</h2>
+      <div className="product-list">
+        {products.map((p) => (
+          <div key={p.id} className="product-card" onClick={() => setSelectedProduct(p)}>
+            <h3>{p.name}</h3>
+            <p>{p.price}</p>
+            <p>{p.shortDesc}</p>
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
 
-export default App
+      {selectedProduct && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <img src={selectedProduct.image} alt={selectedProduct.name} />
+            <h3>{selectedProduct.name}</h3>
+            <p>{selectedProduct.fullDesc}</p>
+            <button onClick={() => setSelectedProduct(null)}>Close</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
